@@ -194,12 +194,23 @@ npm install -g azurite
 
 ## 🚀 ローカルでの実行手順
 
-### 1. 依存関係のインストールとビルド
+### 1. 依存関係のインストールと設定
+
+サーバー（Azure Functions）は `server/` にあります。
 
 ```bash
+cd server
 npm install
+
+# ローカル設定ファイルを用意（Git 管理外のため初回に作成）
+cp local.settings.json.example local.settings.json
+
 npm run build
 ```
+
+> `local.settings.json` は `.gitignore` で除外されています。リポジトリを
+> クローンした場合は、上記のとおり `local.settings.json.example` をコピーして作成してください。
+> このファイルに機密情報は含まれず、ローカルの Azurite 接続設定のみです。
 
 ### 2. Azurite（ストレージエミュレータ）を起動
 
