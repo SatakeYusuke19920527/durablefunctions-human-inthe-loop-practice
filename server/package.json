@@ -1,0 +1,21 @@
+{
+  "name": "durablefunctions-human-inthe-loop-practice",
+  "version": "1.0.0",
+  "description": "Azure Durable Functions Human-in-the-loop minimal sample (TypeScript v4 model)",
+  "main": "dist/src/functions/*.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rimraf dist",
+    "prestart": "npm run clean && npm run build",
+    "start": "func start"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.5.0",
+    "durable-functions": "^3.1.0"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "typescript": "^5.4.5"
+  }
+}

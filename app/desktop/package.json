@@ -1,0 +1,36 @@
+{
+  "name": "durablefunctions-hitl-desktop",
+  "version": "1.0.0",
+  "description": "Durable Functions Human-in-the-loop デスクトップアプリ（Electron、app/web を流用）",
+  "main": "dist/main.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "compile": "tsc -p tsconfig.json",
+    "dev:web": "npm --prefix ../web run dev",
+    "dev:electron": "wait-on tcp:3000 && cross-env NODE_ENV=development electron .",
+    "dev": "npm run compile && concurrently -k -n WEB,APP -c cyan,green \"npm:dev:web\" \"npm:dev:electron\"",
+    "build:web": "npm --prefix ../web run build",
+    "build": "npm run clean && npm run build:web && npm run compile",
+    "start:prod": "cross-env NODE_ENV=production electron .",
+    "dist": "npm run build && electron-builder"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "cross-env": "^7.0.3",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.3",
+    "wait-on": "^8.0.1"
+  },
+  "build": {
+    "appId": "com.example.durablefunctions-hitl",
+    "productName": "DurableFunctions HITL",
+    "files": [
+      "dist/**/*"
+    ],
+    "directories": {
+      "output": "release"
+    }
+  }
+}

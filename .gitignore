@@ -1,0 +1,12 @@
+node_modules/
+dist/
+local.settings.json
+*.log
+
+# Azurite
+__azurite__/
+__azurite_db*__.json
+__blobstorage__/
+__queuestorage__/
+__tablestorage__/
+.vscode/
