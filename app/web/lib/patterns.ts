@@ -39,7 +39,7 @@ export const PATTERNS: PatternDef[] = [
     short: "監視",
     description: "Durable Timer で定期確認する",
     example: "外部ジョブ、デプロイ、支払い、審査状態の監視",
-    implemented: false,
+    implemented: true,
   },
   {
     slug: "human-interaction",
@@ -55,7 +55,7 @@ export const PATTERNS: PatternDef[] = [
     short: "集約",
     description: "イベントを集約し、一定条件で処理",
     example: "メトリクス集計、注文・IoTイベントのバッチ化",
-    implemented: false,
+    implemented: true,
   },
 ];
 

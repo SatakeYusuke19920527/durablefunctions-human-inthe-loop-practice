@@ -82,6 +82,59 @@ export async function startAsync(
   return { instanceId: data.id as string };
 }
 
+/** Monitor（定期監視）を開始する。 */
+export async function startMonitor(
+  intervalSeconds: number,
+  timeoutSeconds: number
+): Promise<{ instanceId: string }> {
+  const res = await fetch(`${BASE_URL}/api/monitor/start`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ intervalSeconds, timeoutSeconds }),
+  });
+  if (!res.ok) {
+    throw new Error(`monitor start failed: ${res.status}`);
+  }
+  const data = await res.json();
+  return { instanceId: data.id as string };
+}
+
+/** Aggregator に数値イベントを送る（add）。 */
+export async function aggregatorAdd(
+  key: string,
+  value: number
+): Promise<void> {
+  const res = await fetch(`${BASE_URL}/api/aggregator/${key}/add`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ value }),
+  });
+  if (!res.ok) {
+    throw new Error(`aggregator add failed: ${res.status}`);
+  }
+}
+
+/** Aggregator の集約状態を取得する。 */
+export async function aggregatorGet(key: string): Promise<unknown> {
+  const res = await fetch(`${BASE_URL}/api/aggregator/${key}`, {
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    throw new Error(`aggregator get failed: ${res.status}`);
+  }
+  return res.json();
+}
+
+/** Aggregator をリセットする。 */
+export async function aggregatorReset(key: string): Promise<void> {
+  const res = await fetch(`${BASE_URL}/api/aggregator/${key}/reset`, {
+    method: "POST",
+  });
+  if (!res.ok) {
+    throw new Error(`aggregator reset failed: ${res.status}`);
+  }
+}
+
 /** 承認/拒否イベントを送信する。 */
 export async function sendApproval(
   instanceId: string,
