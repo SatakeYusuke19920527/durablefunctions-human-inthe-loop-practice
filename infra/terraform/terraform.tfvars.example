@@ -1,0 +1,10 @@
+subscription_id = "356a75c5-1210-4544-ae5b-62ac93d8bdc9"
+location        = "eastus2"
+
+resource_group_name    = "rg-openai-maf"
+prefix                 = "maf"
+openai_account_name    = "oai-maf-26444"
+openai_deployment_name = "gpt-5-mini"
+
+# 初回は公開プレースホルダのまま apply → イメージをビルド&push 後に ACR のイメージへ差し替えて再 apply
+# web_image = "<acr>.azurecr.io/web:latest"

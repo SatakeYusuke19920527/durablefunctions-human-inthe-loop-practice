@@ -1,0 +1,9 @@
+# build 対象外にする（イメージを軽く・安全に保つ）
+node_modules
+.next
+.git
+.env*.local
+Dockerfile
+.dockerignore
+npm-debug.log*
+README.md
