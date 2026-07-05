@@ -6,11 +6,17 @@ export type StageKey =
   | "processing"
   | "completed";
 
+export interface CustomStatus {
+  phase: "waiting" | "processing" | "rejected_retry";
+  attempts: number;
+}
+
 export interface OrchestrationStatus {
   name: string;
   instanceId: string;
   runtimeStatus: string;
-  output: { approved: boolean; message: string } | null;
+  customStatus: CustomStatus | null;
+  output: { approved: boolean; message: string; attempts?: number } | null;
   createdTime: string;
   lastUpdatedTime: string;
 }

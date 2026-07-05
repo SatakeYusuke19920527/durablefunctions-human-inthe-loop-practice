@@ -34,6 +34,22 @@ export async function startOrchestration(): Promise<{ instanceId: string }> {
   return { instanceId: data.id as string };
 }
 
+/** Function chaining を開始する（申請者名を渡す）。 */
+export async function startChaining(
+  name: string
+): Promise<{ instanceId: string }> {
+  const res = await fetch(`${BASE_URL}/api/chaining/start`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name }),
+  });
+  if (!res.ok) {
+    throw new Error(`chaining start failed: ${res.status}`);
+  }
+  const data = await res.json();
+  return { instanceId: data.id as string };
+}
+
 /** 承認/拒否イベントを送信する。 */
 export async function sendApproval(
   instanceId: string,
