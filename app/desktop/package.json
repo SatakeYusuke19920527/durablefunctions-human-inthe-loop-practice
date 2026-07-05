@@ -9,8 +9,8 @@
     "dev:web": "npm --prefix ../web run dev",
     "dev:electron": "wait-on tcp:3000 && cross-env NODE_ENV=development electron .",
     "dev": "npm run compile && concurrently -k -n WEB,APP -c cyan,green \"npm:dev:web\" \"npm:dev:electron\"",
-    "build:web": "npm --prefix ../web run build",
-    "build": "npm run clean && npm run build:web && npm run compile",
+    "start": "npm run compile && cross-env NODE_ENV=production electron .",
+    "build": "npm run clean && npm run compile",
     "start:prod": "cross-env NODE_ENV=production electron .",
     "dist": "npm run build && electron-builder"
   },
@@ -24,13 +24,31 @@
     "wait-on": "^8.0.1"
   },
   "build": {
-    "appId": "com.example.durablefunctions-hitl",
-    "productName": "DurableFunctions HITL",
+    "appId": "com.example.maf-df-desktop",
+    "productName": "DurableFunctions & AgentFramework",
     "files": [
       "dist/**/*"
     ],
     "directories": {
       "output": "release"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.developer-tools"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Development"
     }
   }
 }

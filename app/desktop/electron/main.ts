@@ -1,75 +1,26 @@
 import { app, BrowserWindow, shell } from "electron";
 import * as path from "path";
-import { spawn, ChildProcess } from "child_process";
-import * as net from "net";
+
+// 「薄いシェル」方式:
+// - 開発時: ローカルの Next.js dev サーバー（http://localhost:3000）を読み込む
+// - 本番時: Azure Container Apps にデプロイ済みの Web URL を読み込む
+// デスクトップ側はウィンドウ表示に徹し、更新は Web デプロイだけで完結する。
 
 const isDev = process.env.NODE_ENV !== "production";
 const DEV_URL = process.env.DEV_URL ?? "http://localhost:3000";
-const PROD_PORT = Number(process.env.PROD_PORT ?? 34567);
-const PROD_HOST = "127.0.0.1";
+
+// デプロイ済み Web（Azure Container Apps）の既定 URL。環境変数 WEB_URL で上書き可能。
+const DEFAULT_WEB_URL =
+  "https://maf-web-kyyxw.bravesky-7894b180.eastus.azurecontainerapps.io";
+const WEB_URL = process.env.WEB_URL ?? DEFAULT_WEB_URL;
 
 let mainWindow: BrowserWindow | null = null;
-let nextServer: ChildProcess | null = null;
-
-/** 指定ポートが接続可能になるまで待機する。 */
-function waitForPort(port: number, host: string, timeoutMs = 30000): Promise<void> {
-  const start = Date.now();
-  return new Promise((resolve, reject) => {
-    const tryOnce = () => {
-      const socket = net.connect(port, host);
-      socket.once("connect", () => {
-        socket.destroy();
-        resolve();
-      });
-      socket.once("error", () => {
-        socket.destroy();
-        if (Date.now() - start > timeoutMs) {
-          reject(new Error(`Timed out waiting for ${host}:${port}`));
-        } else {
-          setTimeout(tryOnce, 300);
-        }
-      });
-    };
-    tryOnce();
-  });
-}
-
-/**
- * 本番モードで app/web の standalone サーバーを子プロセスとして起動する。
- * `next build`（output: "standalone"）で生成される server.js を実行する。
- */
-async function startNextStandalone(): Promise<string> {
-  const webDir = path.resolve(__dirname, "..", "..", "web");
-  const serverJs = path.join(webDir, ".next", "standalone", "server.js");
-
-  nextServer = spawn(process.execPath, [serverJs], {
-    cwd: path.join(webDir, ".next", "standalone"),
-    env: {
-      ...process.env,
-      NODE_ENV: "production",
-      PORT: String(PROD_PORT),
-      HOSTNAME: PROD_HOST,
-      // Functions バックエンドの URL（未指定ならローカル func）
-      FUNCTIONS_BASE_URL: process.env.FUNCTIONS_BASE_URL ?? "http://localhost:7071",
-    },
-    stdio: "inherit",
-    // Electron の同梱 Node ランタイムでスクリプトとして実行する
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any);
-
-  nextServer.on("exit", (code) => {
-    console.log(`[next] standalone server exited: ${code}`);
-  });
-
-  await waitForPort(PROD_PORT, PROD_HOST);
-  return `http://${PROD_HOST}:${PROD_PORT}`;
-}
 
 async function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 800,
-    title: "DurableFunctions HITL",
+    width: 1200,
+    height: 860,
+    title: "Durable Functions & Agent Framework",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -77,13 +28,13 @@ async function createWindow() {
     },
   });
 
-  // 外部リンクは既定ブラウザで開く
+  // 外部リンク（target=_blank 等）は既定ブラウザで開く
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
     return { action: "deny" };
   });
 
-  const url = isDev ? DEV_URL : await startNextStandalone();
+  const url = isDev ? DEV_URL : WEB_URL;
   await mainWindow.loadURL(url);
 
   if (isDev) {
@@ -106,12 +57,5 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
-  }
-});
-
-// アプリ終了時に Next サーバーを確実に停止
-app.on("before-quit", () => {
-  if (nextServer && !nextServer.killed) {
-    nextServer.kill();
   }
 });

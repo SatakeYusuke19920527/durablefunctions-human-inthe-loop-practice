@@ -10,3 +10,4 @@ __blobstorage__/
 __queuestorage__/
 __tablestorage__/
 .vscode/
+infra/terraform/tfplan
