@@ -1,0 +1,5 @@
+# Azure Functions (Python v2 programming model)
+azure-functions
+
+# Microsoft Agent Framework（Azure OpenAI クライアントを含む）
+agent-framework

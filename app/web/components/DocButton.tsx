@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { PATTERNS } from "@/lib/patterns";
+import { ALL_PATTERNS, patternRoute } from "@/lib/patterns";
 
 /**
  * 各パターン画面の右上に表示する「ドキュメント」ボタン。
@@ -11,8 +11,9 @@ import { PATTERNS } from "@/lib/patterns";
  */
 export function DocButton() {
   const pathname = usePathname();
-  const slug = pathname.replace(/^\//, "");
-  const pattern = PATTERNS.find((p) => p.slug === slug && p.doc);
+  const pattern = ALL_PATTERNS.find(
+    (p) => p.doc && patternRoute(p) === pathname
+  );
 
   if (!pattern) return null;
 

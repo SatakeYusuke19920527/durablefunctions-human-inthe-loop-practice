@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { PATTERNS } from "@/lib/patterns";
+import { ALL_PATTERNS } from "@/lib/patterns";
 
 /**
  * docs/ ディレクトリの絶対パスを解決する。
@@ -20,7 +20,7 @@ function resolveDocsDir(): string {
 
 /** slug から Markdown の内容を読み込む。存在しなければ null。 */
 export function readDocBySlug(slug: string): { title: string; content: string } | null {
-  const pattern = PATTERNS.find((p) => p.slug === slug && p.doc);
+  const pattern = ALL_PATTERNS.find((p) => p.slug === slug && p.doc);
   if (!pattern?.doc) return null;
 
   const filePath = path.join(resolveDocsDir(), pattern.doc);

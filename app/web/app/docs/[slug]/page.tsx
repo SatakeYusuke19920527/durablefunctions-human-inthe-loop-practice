@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { readDocBySlug } from "@/lib/docs";
-import { getPattern, PATTERNS } from "@/lib/patterns";
+import { getPattern, ALL_PATTERNS, patternRoute } from "@/lib/patterns";
 import { MarkdownView } from "@/components/MarkdownView";
 
 export function generateStaticParams() {
-  return PATTERNS.filter((p) => p.doc).map((p) => ({ slug: p.slug }));
+  return ALL_PATTERNS.filter((p) => p.doc).map((p) => ({ slug: p.slug }));
 }
 
 export default async function DocPage({
@@ -19,6 +19,7 @@ export default async function DocPage({
   if (!doc || !pattern) {
     notFound();
   }
+  const backHref = patternRoute(pattern);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -26,7 +27,7 @@ export default async function DocPage({
       <div className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3">
           <Link
-            href={`/${pattern.slug}`}
+            href={backHref}
             className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900"
           >
             <span>←</span> {pattern.title} に戻る
@@ -43,7 +44,7 @@ export default async function DocPage({
 
         <div className="mt-12 border-t border-slate-200 pt-6">
           <Link
-            href={`/${pattern.slug}`}
+            href={backHref}
             className="text-sm text-blue-600 hover:underline"
           >
             ← {pattern.title} のデモに戻る
