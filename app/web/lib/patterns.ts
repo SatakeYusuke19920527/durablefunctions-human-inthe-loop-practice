@@ -31,7 +31,7 @@ export const PATTERNS: PatternDef[] = [
     short: "非同期HTTP",
     description: "起動後に 202 を返し、状態をポーリング",
     example: "長時間の生成AI処理、バッチ処理API",
-    implemented: false,
+    implemented: true,
   },
   {
     slug: "monitor",

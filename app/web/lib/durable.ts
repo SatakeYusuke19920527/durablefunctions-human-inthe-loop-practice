@@ -66,6 +66,22 @@ export async function startFanOut(
   return { instanceId: data.id as string };
 }
 
+/** Async HTTP API（長時間処理）を開始する（ステップ数を渡す）。 */
+export async function startAsync(
+  steps: number
+): Promise<{ instanceId: string }> {
+  const res = await fetch(`${BASE_URL}/api/async/start`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ steps }),
+  });
+  if (!res.ok) {
+    throw new Error(`async start failed: ${res.status}`);
+  }
+  const data = await res.json();
+  return { instanceId: data.id as string };
+}
+
 /** 承認/拒否イベントを送信する。 */
 export async function sendApproval(
   instanceId: string,
