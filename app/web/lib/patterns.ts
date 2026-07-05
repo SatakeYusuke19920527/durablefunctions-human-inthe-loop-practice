@@ -23,7 +23,7 @@ export const PATTERNS: PatternDef[] = [
     short: "並列 & 集約",
     description: "並列実行して結果を集約する",
     example: "複数ファイル分析、複数AIエージェントの並列処理",
-    implemented: false,
+    implemented: true,
   },
   {
     slug: "async-http",

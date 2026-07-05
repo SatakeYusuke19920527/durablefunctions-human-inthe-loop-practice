@@ -50,6 +50,22 @@ export async function startChaining(
   return { instanceId: data.id as string };
 }
 
+/** Fan-out / Fan-in を開始する（分析するファイル名の配列を渡す）。 */
+export async function startFanOut(
+  files: string[]
+): Promise<{ instanceId: string }> {
+  const res = await fetch(`${BASE_URL}/api/fanout/start`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ files }),
+  });
+  if (!res.ok) {
+    throw new Error(`fanout start failed: ${res.status}`);
+  }
+  const data = await res.json();
+  return { instanceId: data.id as string };
+}
+
 /** 承認/拒否イベントを送信する。 */
 export async function sendApproval(
   instanceId: string,
