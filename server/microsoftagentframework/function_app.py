@@ -11,6 +11,7 @@ from patterns.sequential import bp as sequential_bp
 from patterns.concurrent import bp as concurrent_bp
 from patterns.handoff import bp as handoff_bp
 from patterns.group_chat import bp as group_chat_bp
+from patterns.magentic import bp as magentic_bp
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
@@ -19,7 +20,4 @@ app.register_blueprint(sequential_bp)
 app.register_blueprint(concurrent_bp)
 app.register_blueprint(handoff_bp)
 app.register_blueprint(group_chat_bp)
-
-# 実装時に追加していく:
-# from patterns.magentic import bp as magentic_bp
-# app.register_blueprint(magentic_bp)
+app.register_blueprint(magentic_bp)

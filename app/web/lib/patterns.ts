@@ -125,8 +125,9 @@ export const AGENT_PATTERNS: PatternDef[] = [
     short: "動的指揮",
     description: "Manager Agent が次の Agent を動的に決める",
     example: "手順が固定できない複雑な調査",
-    implemented: false,
+    implemented: true,
     group: "agent",
+    doc: "MAF-magentic.md",
   },
 ];
 
