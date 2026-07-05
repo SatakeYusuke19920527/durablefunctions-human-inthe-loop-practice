@@ -54,7 +54,7 @@ Desktop アプリは **UI のみ** です。Azure Functions（Durable）と Azur
 azurite --silent --location ./__azurite__
 
 # 2) バックエンド（Azure Functions）
-cd server && npm start        # http://localhost:7071
+cd server/durablefunctions && npm start        # http://localhost:7071
 ```
 
 ## 開発モードで起動

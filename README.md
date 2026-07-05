@@ -199,7 +199,7 @@ npm install -g azurite
 サーバー（Azure Functions）は `server/` にあります。
 
 ```bash
-cd server
+cd server/durablefunctions
 npm install
 
 # ローカル設定ファイルを用意（Git 管理外のため初回に作成）

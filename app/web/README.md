@@ -94,7 +94,7 @@ app/web/
 azurite --silent --location ./__azurite__
 
 # 2) Azure Functions（Durable）
-cd ../../server && npm start        # http://localhost:7071
+cd ../../server/durablefunctions && npm start        # http://localhost:7071
 ```
 
 ### Web を起動
